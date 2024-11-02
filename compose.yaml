@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:latest
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: assignment
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  app:
+    image: assignment
+    build: .
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mysql
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/assignment?useSSL=false&serverTimezone=UTC
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+#  frontend:
+#    image: frontend
+#    build: C:\Users\z0o0z\OneDrive\Desktop\Booky\Booky
+#    ports:
+#      - "5173:5173"
+#      - "5174:5174"
+#    expose:
+#      - "5173"
+#      - "5174"
+#    depends_on:
+#      - mysql
+#      - app
+
+volumes:
+  mysql_data:
